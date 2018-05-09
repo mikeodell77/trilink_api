@@ -1,0 +1,2 @@
+class TblHdCrossref < ApplicationRecord
+end
