@@ -1,11 +1,8 @@
 class ChainsawController < ApplicationController
   def index
-    puts ">>>>> home is : #{chainsaw_params[:home]}"
     if chainsaw_params[:home] == 'true'
-      puts ">>> pulling from the home depot data"
       @chainsaws = TblHdChainsawsMod.replacements(chainsaw_params)
     else
-      puts ">>> pulling from NONE home depot data"
       @chainsaws = TblChainsaw.replacements(chainsaw_params)
     end
     render json: @chainsaws
@@ -52,6 +49,38 @@ class ChainsawController < ApplicationController
     @kickbacks = TblChainsaw.select(:kickback).distinct.where(brand: chainsaw_params[:brand], model: chainsaw_params[:model], barlength: chainsaw_params[:barlength], pitch: chainsaw_params[:pitch], gauge: chainsaw_params[:gauge])
     render json: @kickbacks
   end
+
+  def hd_brands
+    @brands = TblHdChainsawsMod.distinct_brands
+    render json: @brands
+  end
+
+  def hd_models 
+    @models = TblHdChainsawsMod.select(:model).distinct.where(brand: chainsaw_params[:brand])
+    render json: @models
+  end
+    
+  def hd_barlengths
+    @bar_lengths = TblHdChainsawsMod.select(:barlength).distinct.where(brand: chainsaw_params[:brand], model: chainsaw_params[:model])
+    render json: @bar_lengths
+  end
+
+  def hd_pitches
+    @pitches = TblHdChainsawsMod.select(:pitch).distinct.where(brand: chainsaw_params[:brand], model: chainsaw_params[:model], barlength: chainsaw_params[:barlength])
+    render json: @pitches
+  end
+
+  def hd_gauges
+    @gauges = TblHdChainsawsMod.select(:gauge).distinct.where(brand: chainsaw_params[:brand], model: chainsaw_params[:model], barlength: chainsaw_params[:barlength], pitch: chainsaw_params[:pitch])
+    puts ">>>>>>>> gauges : #{@gauges.inspect}"
+    render json: @gauges
+  end
+
+  def hd_kickbacks
+    @kickbacks = TblHdChainsawsMod.select(:kickback).distinct.where(brand: chainsaw_params[:brand], model: chainsaw_params[:model], barlength: chainsaw_params[:barlength], pitch: chainsaw_params[:pitch], gauge: chainsaw_params[:gauge])
+    render json: @kickbacks
+  end
+
 
   private
   def chainsaw_params

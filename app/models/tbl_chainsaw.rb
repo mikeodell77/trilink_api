@@ -11,9 +11,7 @@ class TblChainsaw < ApplicationRecord
   end
 
   def self.distinct_models(brand)
-    puts ">>>> brand #{brand}"
     self.select(:brand, :model, :barlength).distinct.where(brand: brand)
-    # self.where("brand = ?", brand)
   end
 
   def self.replacements(search_params)
@@ -23,6 +21,5 @@ class TblChainsaw < ApplicationRecord
         .search_by_barlength(search_params[:barlength])
         .search_by_pitch(search_params[:pitch])
         .search_by_gauge(search_params[:gauge])
-        # .search_by_kickback(search_params[:kickback])
   end
 end
